@@ -74,6 +74,25 @@ void putDescriptor(Aws::S3::S3Client s3client, std::vector<cv::Mat> descriptor, 
     }
 }
 
+std::vector<cv::Mat> getDescriptor(Aws::S3::S3Client s3client, Aws::String bucket, Aws::String key) {
+
+    Aws::S3::Model::GetObjectRequest getObjectRequest;
+    getObjectRequest.SetBucket(bucket);
+    getObjectRequest.SetKey(key);
+    auto getObjectOutcome = s3client.GetObject(getObjectRequest);
+    if (!getObjectOutcome.IsSuccess()) {
+        std::stringstream ss;
+        ss << "File download failed from s3 with error " << getObjectOutcome.GetError().GetMessage() << std::endl;
+        throw ss.str();
+    }
+    std::stringstream ss;
+    ss << getObjectOutcome.GetResult().GetBody().rdbuf();
+    boost::archive::binary_iarchive ia(ss);
+    std::vector<cv::Mat> descriptor;
+    ia >> descriptor;
+    return descriptor;
+}
+
 }
 }
 
