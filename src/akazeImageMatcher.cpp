@@ -12,7 +12,7 @@
 
 int main(int argc, char** argv) {
 
-    Aws::S3::S3Client s3Client = d9magai::s3utils::getS3client();
+    Aws::S3::S3Client s3client = d9magai::s3utils::getS3client();
     std::vector<Aws::String> s = { "path/to/f_lena.jpg", "path/to/img.jpg", "path/to/graf1.png", "path/to/graf3.png" };
 
     try {
@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
         Aws::S3::Model::GetObjectRequest getObjectRequest;
         getObjectRequest.SetBucket("d9magai.mybucket");
         getObjectRequest.SetKey("path/to/matcher1");
-        auto getObjectOutcome = s3Client.GetObject(getObjectRequest);
+        auto getObjectOutcome = s3client.GetObject(getObjectRequest);
         if (!getObjectOutcome.IsSuccess()) {
             std::stringstream ss;
             ss << "File download failed from s3 with error " << getObjectOutcome.GetError().GetMessage() << std::endl;
@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
         m2->add(desc);
         m2->train();
 
-        cv::Mat image = d9magai::s3utils::getImageFromS3(s3Client, d9magai::commons::BUCKET, "path/to/img.jpg");
+        cv::Mat image = d9magai::s3utils::getImageFromS3(s3client, d9magai::commons::BUCKET, "path/to/img.jpg");
         std::vector<cv::KeyPoint> kp;
         d->detect(image, kp);
         cv::Mat queryDesc;

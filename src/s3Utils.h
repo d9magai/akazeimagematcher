@@ -28,12 +28,12 @@ Aws::S3::S3Client getS3client() {
     return Aws::S3::S3Client(Aws::Auth::AWSCredentials(d9magai::commons::AWS_ACCESS_KEY_ID, d9magai::commons::AWS_SECRET_ACCESS_KEY), config);
 }
 
-cv::Mat getImageFromS3(Aws::S3::S3Client s3Client, Aws::String bucket, Aws::String key) {
+cv::Mat getImageFromS3(Aws::S3::S3Client s3client, Aws::String bucket, Aws::String key) {
 
     Aws::S3::Model::GetObjectRequest getObjectRequest;
     getObjectRequest.SetBucket(bucket);
     getObjectRequest.SetKey(key);
-    auto getObjectOutcome = s3Client.GetObject(getObjectRequest);
+    auto getObjectOutcome = s3client.GetObject(getObjectRequest);
     if (!getObjectOutcome.IsSuccess()) {
         std::stringstream ss;
         ss << "File download failed from s3 with error :" << getObjectOutcome.GetError().GetMessage() << std::endl;

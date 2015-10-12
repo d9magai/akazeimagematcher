@@ -11,7 +11,7 @@
 
 int main(int argc, char** argv) {
 
-    Aws::S3::S3Client s3Client = d9magai::s3utils::getS3client();
+    Aws::S3::S3Client s3clinet = d9magai::s3utils::getS3client();
 
     try {
         cv::Ptr<cv::FeatureDetector> d = cv::AKAZE::create();
@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
         std::vector<cv::Mat> addDesc;
         for (auto itr = s.begin(); itr != s.end(); ++itr) {
             std::cout << i << ":" << (*itr) << std::endl;
-            cv::Mat image = d9magai::s3utils::getImageFromS3(s3Client, d9magai::commons::BUCKET, (*itr));
+            cv::Mat image = d9magai::s3utils::getImageFromS3(s3clinet, d9magai::commons::BUCKET, (*itr));
             std::vector<cv::KeyPoint> kp;
             d->detect(image, kp);
             std::cout << "detected: " << kp.size() << std::endl;
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
         putObjectRequest.SetContentMD5(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateMD5(*putObjectRequest.GetBody())));
         putObjectRequest.SetContentType("application/octet-stream");
         putObjectRequest.SetKey("path/to/matcher1");
-        Aws::S3::Model::PutObjectOutcome putObjectOutcome = s3Client.PutObject(putObjectRequest);
+        Aws::S3::Model::PutObjectOutcome putObjectOutcome = s3clinet.PutObject(putObjectRequest);
         if (!putObjectOutcome.IsSuccess()) {
             std::stringstream ss;
             ss << "Object put failed tos3 with error :" << putObjectOutcome.GetError().GetMessage() << std::endl;
