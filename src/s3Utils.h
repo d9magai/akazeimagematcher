@@ -24,7 +24,7 @@ Aws::S3::S3Client getS3client() {
     config.connectTimeoutMs = 30000;
     config.requestTimeoutMs = 30000;
     config.region = Aws::Region::AP_NORTHEAST_1;
-    Aws::S3::S3Client s3client(Aws::Auth::AWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY), config);
+    Aws::S3::S3Client s3client(Aws::Auth::AWSCredentials(d9magai::commons::AWS_ACCESS_KEY_ID, d9magai::commons::AWS_SECRET_ACCESS_KEY), config);
     return s3client;
 }
 
