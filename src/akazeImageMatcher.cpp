@@ -10,26 +10,6 @@
 #include "commons.h"
 #include "s3Utils.h"
 
-cv::Mat getImage(Aws::S3::S3Client s3Client, Aws::String key) {
-
-    Aws::S3::Model::GetObjectRequest getObjectRequest;
-    getObjectRequest.SetBucket("d9magai.mybucket");
-    getObjectRequest.SetKey(key);
-
-    auto getObjectOutcome = s3Client.GetObject(getObjectRequest);
-    if (!getObjectOutcome.IsSuccess()) {
-        std::stringstream ss;
-        ss << "File download failed from s3 with error " << getObjectOutcome.GetError().GetMessage() << std::endl;
-        throw ss.str();
-    }
-
-    std::stringstream ss;
-    ss << getObjectOutcome.GetResult().GetBody().rdbuf();
-    std::string str = ss.str();
-    std::vector<char> v(str.begin(), str.end());
-    return cv::imdecode(cv::Mat(v), CV_LOAD_IMAGE_COLOR);
-}
-
 int main(int argc, char** argv) {
 
     Aws::S3::S3Client s3Client = d9magai::s3utils::getS3client();
@@ -58,7 +38,7 @@ int main(int argc, char** argv) {
         m2->add(desc);
         m2->train();
 
-        cv::Mat image = getImage(s3Client, "path/to/img.jpg");
+        cv::Mat image = d9magai::s3utils::getImageFromS3(s3Client, d9magai::commons::BUCKET, "path/to/img.jpg");
         std::vector<cv::KeyPoint> kp;
         d->detect(image, kp);
         cv::Mat queryDesc;
