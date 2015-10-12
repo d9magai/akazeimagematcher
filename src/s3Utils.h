@@ -8,12 +8,8 @@
 #ifndef S3UTILS_H_
 #define S3UTILS_H_
 
-#include <aws/core/auth/AWSCredentialsProvider.h>
-#include <aws/core/utils/StringUtils.h>
 #include <aws/s3/S3Client.h>
-#include <aws/s3/model/GetObjectRequest.h>
-#include <aws/s3/model/PutObjectRequest.h>
-#include <aws/core/utils/HashingUtils.h>
+#include <aws/core/auth/AWSCredentialsProvider.h>
 #include <aws/core/utils/StringUtils.h>
 #include "commons.h"
 

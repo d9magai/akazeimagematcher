@@ -2,13 +2,9 @@
 #include <fstream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
-#include <aws/core/auth/AWSCredentialsProvider.h>
-#include <aws/core/utils/StringUtils.h>
-#include <aws/s3/S3Client.h>
 #include <aws/s3/model/GetObjectRequest.h>
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/core/utils/HashingUtils.h>
-#include <aws/core/utils/StringUtils.h>
 #include "matSerialization.h"
 #include "commons.h"
 #include "s3Utils.h"

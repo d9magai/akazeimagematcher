@@ -4,9 +4,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/features2d.hpp>
-#include <aws/core/auth/AWSCredentialsProvider.h>
 #include <aws/core/utils/StringUtils.h>
-#include <aws/s3/S3Client.h>
 #include <aws/s3/model/GetObjectRequest.h>
 #include "matSerialization.h"
 #include "commons.h"
