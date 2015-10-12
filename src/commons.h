@@ -15,7 +15,7 @@ namespace commons {
 
 const Aws::String AWS_ACCESS_KEY_ID = std::getenv("AWS_ACCESS_KEY_ID");
 const Aws::String AWS_SECRET_ACCESS_KEY = std::getenv("AWS_SECRET_ACCESS_KEY");
-const Aws::String BUCKET = "d9magai.mybudket";
+const Aws::String BUCKET = "d9magai.mybucket";
 
 }
 }
