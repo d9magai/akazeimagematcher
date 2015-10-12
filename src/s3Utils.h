@@ -10,8 +10,10 @@
 
 #include <aws/s3/S3Client.h>
 #include <aws/s3/model/GetObjectRequest.h>
+#include <aws/s3/model/PutObjectRequest.h>
 #include <aws/core/auth/AWSCredentialsProvider.h>
 #include <aws/core/utils/StringUtils.h>
+#include <aws/core/utils/HashingUtils.h>
 #include <opencv2/opencv.hpp>
 #include "commons.h"
 
@@ -45,6 +47,31 @@ cv::Mat getImageFromS3(Aws::S3::S3Client s3client, Aws::String bucket, Aws::Stri
     std::string str = ss.str();
     std::vector<char> vec(str.begin(), str.end());
     return cv::imdecode(cv::Mat(vec), CV_LOAD_IMAGE_COLOR);
+}
+
+void putDescriptor(Aws::S3::S3Client s3client, std::vector<cv::Mat> descriptor, Aws::String bucket, Aws::String key) {
+
+    std::stringstream ss;
+    boost::archive::binary_oarchive oa(ss);
+    oa << descriptor;
+    std::string str = ss.str();
+    std::shared_ptr<Aws::IOStream> objectStream = Aws::MakeShared<Aws::StringStream>("PutDescriptor");
+    *objectStream << str;
+    objectStream->flush();
+
+    Aws::S3::Model::PutObjectRequest putObjectRequest;
+    putObjectRequest.SetBucket(bucket);
+    putObjectRequest.SetBody(objectStream);
+    putObjectRequest.SetContentLength(static_cast<long>(putObjectRequest.GetBody()->tellp()));
+    putObjectRequest.SetContentMD5(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateMD5(*putObjectRequest.GetBody())));
+    putObjectRequest.SetContentType("application/octet-stream");
+    putObjectRequest.SetKey(key);
+    Aws::S3::Model::PutObjectOutcome putObjectOutcome = s3client.PutObject(putObjectRequest);
+    if (!putObjectOutcome.IsSuccess()) {
+        std::stringstream ss;
+        ss << "Object put failed to s3 with error :" << putObjectOutcome.GetError().GetMessage() << std::endl;
+        throw ss.str();
+    }
 }
 
 }
