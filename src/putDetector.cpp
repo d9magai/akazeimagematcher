@@ -35,7 +35,7 @@ cv::Mat getImage(Aws::S3::S3Client s3Client, Aws::String key) {
 
 int main(int argc, char** argv) {
 
-    Aws::S3::S3Client s3Client = getS3client();
+    Aws::S3::S3Client s3Client = d9magai::s3utils::getS3client();
 
     try {
         cv::Ptr<cv::FeatureDetector> d = cv::AKAZE::create();

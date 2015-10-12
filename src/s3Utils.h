@@ -17,6 +17,9 @@
 #include <aws/core/utils/StringUtils.h>
 #include "commons.h"
 
+namespace d9magai {
+namespace s3utils {
+
 Aws::S3::S3Client getS3client() {
 
     Aws::Client::ClientConfiguration config;
@@ -26,6 +29,9 @@ Aws::S3::S3Client getS3client() {
     config.region = Aws::Region::AP_NORTHEAST_1;
     Aws::S3::S3Client s3client(Aws::Auth::AWSCredentials(d9magai::commons::AWS_ACCESS_KEY_ID, d9magai::commons::AWS_SECRET_ACCESS_KEY), config);
     return s3client;
+}
+
+}
 }
 
 #endif /* S3UTILS_H_ */

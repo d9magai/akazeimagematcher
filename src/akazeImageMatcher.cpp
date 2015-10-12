@@ -34,7 +34,7 @@ cv::Mat getImage(Aws::S3::S3Client s3Client, Aws::String key) {
 
 int main(int argc, char** argv) {
 
-    Aws::S3::S3Client s3Client = getS3client();
+    Aws::S3::S3Client s3Client = d9magai::s3utils::getS3client();
     std::vector<Aws::String> s = { "path/to/f_lena.jpg", "path/to/img.jpg", "path/to/graf1.png", "path/to/graf3.png" };
 
     try {
