@@ -10,6 +10,7 @@
 #include <aws/s3/model/GetObjectRequest.h>
 #include "matSerialization.h"
 #include "commons.h"
+#include "s3Utils.h"
 
 cv::Mat getImage(Aws::S3::S3Client s3Client, Aws::String key) {
 
@@ -33,12 +34,7 @@ cv::Mat getImage(Aws::S3::S3Client s3Client, Aws::String key) {
 
 int main(int argc, char** argv) {
 
-    Aws::Client::ClientConfiguration config;
-    config.scheme = Aws::Http::Scheme::HTTPS;
-    config.connectTimeoutMs = 30000;
-    config.requestTimeoutMs = 30000;
-    config.region = Aws::Region::AP_NORTHEAST_1;
-    Aws::S3::S3Client s3Client(Aws::Auth::AWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY), config);
+    Aws::S3::S3Client s3Client = getS3client();
     std::vector<Aws::String> s = { "path/to/f_lena.jpg", "path/to/img.jpg", "path/to/graf1.png", "path/to/graf3.png" };
 
     try {
