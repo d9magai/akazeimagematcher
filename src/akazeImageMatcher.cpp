@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
         m2->add(desc);
         m2->train();
 
-        cv::Mat image = d9magai::s3utils::getImageFromS3(s3client, d9magai::commons::BUCKET, "path/to/img.jpg");
+        cv::Mat image = d9magai::s3utils::getImage(s3client, d9magai::commons::BUCKET, "path/to/img.jpg");
         std::vector<cv::KeyPoint> kp;
         d->detect(image, kp);
         cv::Mat queryDesc;

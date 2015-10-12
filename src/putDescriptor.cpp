@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
         std::vector<cv::Mat> descriptors;
         for (auto itr = s.begin(); itr != s.end(); ++itr) {
             std::cout << i << ":" << (*itr) << std::endl;
-            cv::Mat image = d9magai::s3utils::getImageFromS3(s3clinet, d9magai::commons::BUCKET, (*itr));
+            cv::Mat image = d9magai::s3utils::getImage(s3clinet, d9magai::commons::BUCKET, (*itr));
             std::vector<cv::KeyPoint> kp;
             d->detect(image, kp);
             std::cout << "detected: " << kp.size() << std::endl;
