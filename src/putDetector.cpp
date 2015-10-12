@@ -10,9 +10,7 @@
 #include <aws/core/utils/HashingUtils.h>
 #include <aws/core/utils/StringUtils.h>
 #include "matSerialization.h"
-
-const Aws::String AWS_ACCESS_KEY_ID = std::getenv("AWS_ACCESS_KEY_ID");
-const Aws::String AWS_SECRET_ACCESS_KEY = std::getenv("AWS_SECRET_ACCESS_KEY");
+#include "commons.h"
 
 cv::Mat getImage(Aws::S3::S3Client s3Client, Aws::String key) {
 
