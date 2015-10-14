@@ -41,9 +41,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        std::vector<cv::Mat> trainDescs = m->getTrainDescriptors();
-        double similarity = static_cast<double>(maxVotes) / trainDescs[maxImageId].rows * 100.0;
-        if (similarity < 5.0) {
+        if (static_cast<double>(maxVotes) / m->getTrainDescriptors()[maxImageId].rows < 0.05) {
             maxImageId = -1; // マッチした特徴点の数が全体の5%より少なければ、未検出とする
         }
         std::cout << maxImageId << std::endl;
