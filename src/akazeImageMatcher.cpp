@@ -27,23 +27,20 @@ int main(int argc, char** argv) {
         m->train();
         m->match(queryDesc, matches);
 
-        int length = s.size();
-        int votes[length] = {}; // 学習画像の投票箱
-
-        for (unsigned int i = 0; i < matches.size(); i++) {
-            if (matches[i].distance < 45.0) {
-                votes[matches[i].imgIdx]++;
-            }
-        }
-        // 投票数の多い画像のIDを調査
+        int votes[s.size()] = { }; // 学習画像の投票箱
+        // 投票数の多い画像のIDと特徴点の数を調査
         int maxImageId = -1;
         int maxVotes = 0;
-        for (int i = 0; i < length; i++) {
-            if (votes[i] > maxVotes) {
-                maxImageId = i;  //マッチした特徴点を一番多く持つ学習画像のID
-                maxVotes = votes[i]; //マッチした特徴点の数
+        for (const cv::DMatch& match : matches) {
+            if (match.distance < 45.0) {
+                votes[match.imgIdx]++;
+                if (votes[match.imgIdx] > maxVotes) {
+                    maxImageId = match.imgIdx;        //マッチした特徴点を一番多く持つ学習画像のIDを記憶
+                    maxVotes = votes[match.imgIdx];        //マッチした特徴点の数
+                }
             }
         }
+
         std::vector<cv::Mat> trainDescs = m->getTrainDescriptors();
         double similarity = static_cast<double>(maxVotes) / trainDescs[maxImageId].rows * 100.0;
         if (similarity < 5.0) {
