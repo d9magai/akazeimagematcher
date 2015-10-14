@@ -33,8 +33,7 @@ int main(int argc, char** argv) {
             votes[i] = 0;
 
         for (unsigned int i = 0; i < matches.size(); i++) {
-            float d = matches[i].distance;
-            if (d < 45.0) {
+            if (matches[i].distance < 45.0) {
                 votes[matches[i].imgIdx]++;
             }
         }
