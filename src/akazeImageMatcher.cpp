@@ -28,9 +28,7 @@ int main(int argc, char** argv) {
         m->match(queryDesc, matches);
 
         int length = s.size();
-        int votes[length]; // 学習画像の投票箱
-        for (int i = 0; i < length; i++)
-            votes[i] = 0;
+        int votes[length] = {}; // 学習画像の投票箱
 
         for (unsigned int i = 0; i < matches.size(); i++) {
             if (matches[i].distance < 45.0) {
