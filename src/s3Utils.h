@@ -46,7 +46,7 @@ cv::Mat getImage(Aws::S3::S3Client s3client, Aws::String bucket, Aws::String key
     ss << getObjectOutcome.GetResult().GetBody().rdbuf();
     std::string str = ss.str();
     std::vector<char> vec(str.begin(), str.end());
-    return cv::imdecode(cv::Mat(vec), CV_LOAD_IMAGE_COLOR);
+    return cv::imdecode(cv::Mat(vec), CV_LOAD_IMAGE_GRAYSCALE);
 }
 
 void putDescriptor(Aws::S3::S3Client s3client, std::vector<cv::Mat> descriptor, Aws::String bucket, Aws::String key) {
