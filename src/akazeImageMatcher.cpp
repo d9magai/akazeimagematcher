@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
+#include <aws/s3/model/ListObjectsRequest.h>
 #include "matSerialization.h"
 #include "commons.h"
 #include "s3Utils.h"
@@ -12,6 +13,20 @@ int main(int argc, char** argv) {
     std::vector<Aws::String> s = { "path/to/f_lena.jpg", "path/to/img.jpg", "path/to/graf1.png", "path/to/graf3.png" };
 
     try {
+        Aws::S3::Model::ListObjectsRequest listObjectsRequest;
+        listObjectsRequest.SetBucket(d9magai::commons::BUCKET);
+        listObjectsRequest.SetPrefix("prefix/");
+        Aws::S3::Model::ListObjectsOutcome listObjectsOutcome = s3client.ListObjects(listObjectsRequest);
+
+        if (!listObjectsOutcome.IsSuccess()) {
+            std::stringstream ss;
+            ss << "get listObjects error :" << listObjectsOutcome.GetError().GetMessage() << std::endl;
+            throw ss.str();
+        }
+        for (const auto& object : listObjectsOutcome.GetResult().GetContents()) {
+            std::cout << object.GetKey() << std::endl;
+        }
+
         cv::Ptr<cv::FeatureDetector> d = cv::ORB::create();
         std::vector<cv::KeyPoint> kp;
         cv::Mat image = d9magai::s3utils::getImage(s3client, d9magai::commons::BUCKET, "path/to/img.jpg");
