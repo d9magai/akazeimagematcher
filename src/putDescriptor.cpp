@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     Aws::S3::S3Client s3clinet = d9magai::s3utils::getS3client();
 
     try {
-        cv::Ptr<cv::FeatureDetector> d = cv::AKAZE::create();
+        cv::Ptr<cv::FeatureDetector> d = cv::ORB::create();
 
         std::vector<Aws::String> s = { "path/to/f_lena.jpg", "path/to/img.jpg", "path/to/graf1.png", "path/to/graf3.png" };
         int i = 0;

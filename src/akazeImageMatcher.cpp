@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     std::vector<Aws::String> s = { "path/to/f_lena.jpg", "path/to/img.jpg", "path/to/graf1.png", "path/to/graf3.png" };
 
     try {
-        cv::Ptr<cv::FeatureDetector> d = cv::AKAZE::create();
+        cv::Ptr<cv::FeatureDetector> d = cv::ORB::create();
         std::vector<cv::KeyPoint> kp;
         cv::Mat image = d9magai::s3utils::getImage(s3client, d9magai::commons::BUCKET, "path/to/img.jpg");
         d->detect(image, kp);
