@@ -15,20 +15,20 @@ int main(int argc, char** argv) {
     try {
         cv::Ptr<cv::FeatureDetector> d = cv::ORB::create();
         std::vector<cv::KeyPoint> kp;
-        cv::Mat image = d9magai::s3utils::getImage(s3client, d9magai::commons::BUCKET, "path/to/img.jpg");
+        cv::Mat image = cv::imread("13929.jpg", CV_LOAD_IMAGE_GRAYSCALE);
         d->detect(image, kp);
         cv::Mat queryDesc;
         d->compute(image, kp, queryDesc);
 
         cv::Ptr<cv::flann::IndexParams> indexParams = new cv::flann::LshIndexParams(12, 20, 2);
         cv::Ptr<cv::FlannBasedMatcher> m = cv::Ptr<cv::FlannBasedMatcher>(new cv::FlannBasedMatcher(indexParams));
-        std::vector<cv::Mat> desc = d9magai::s3utils::getDescriptor(s3client, d9magai::commons::BUCKET, "path/to/matcher1");
+        std::vector<cv::Mat> desc = d9magai::s3utils::getDescriptor(s3client, "mtg.d9magai.jp", "LEA/descriptor");
         std::vector<cv::DMatch> matches;
         m->add(desc);
         m->train();
         m->match(queryDesc, matches);
 
-        int votes[s.size()] = { }; // 学習画像の投票箱
+        int votes[295] = { }; // 学習画像の投票箱
         // 投票数の多い画像のIDと特徴点の数を調査
         int maxImageId = -1;
         int maxVotes = 0;
