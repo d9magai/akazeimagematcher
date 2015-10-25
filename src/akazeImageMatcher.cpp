@@ -1,5 +1,6 @@
 #include <sstream>
 #include <cstdlib>
+#include <pqxx/pqxx>
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
 #include "matSerialization.h"
@@ -44,9 +45,15 @@ int main(int argc, char** argv) {
         if (static_cast<double>(maxVotes) / m->getTrainDescriptors()[maxImageId].rows < 0.05) {
             maxImageId = -1; // マッチした特徴点の数が全体の5%より少なければ、未検出とする
         }
-        std::cout << maxImageId << std::endl;
-        std::cout << s[maxImageId] << std::endl;
-
+        pqxx::connection conn("dbname=mtg user=d9magai");
+        pqxx::work T(conn);
+        std::string sql = "SELECT name FROM cards  WHERE id = " + std::to_string(maxImageId + 1);
+        pqxx::result R(T.exec(sql));
+        for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
+            std::cout << c[0].as(std::string()) << std::endl;
+        }
+        T.commit();
+        conn.disconnect();
     } catch (std::string str) {
         std::cerr << str << std::endl;
     }
