@@ -20,14 +20,19 @@
 namespace d9magai {
 namespace s3utils {
 
-Aws::S3::S3Client getS3client() {
+Aws::S3::S3Client getS3client(Aws::String AwsAccessKeyId, Aws::String AwsSecretAccessKey) {
 
     Aws::Client::ClientConfiguration config;
     config.scheme = Aws::Http::Scheme::HTTPS;
     config.connectTimeoutMs = 30000;
     config.requestTimeoutMs = 30000;
     config.region = Aws::Region::AP_NORTHEAST_1;
-    return Aws::S3::S3Client(Aws::Auth::AWSCredentials(d9magai::commons::AWS_ACCESS_KEY_ID, d9magai::commons::AWS_SECRET_ACCESS_KEY), config);
+    return Aws::S3::S3Client(Aws::Auth::AWSCredentials(AwsAccessKeyId, AwsSecretAccessKey), config);
+}
+
+Aws::S3::S3Client getS3client() {
+
+    return getS3client(d9magai::commons::AWS_ACCESS_KEY_ID, d9magai::commons::AWS_SECRET_ACCESS_KEY);
 }
 
 cv::Mat getImage(Aws::S3::S3Client s3client, Aws::String bucket, Aws::String key) {
